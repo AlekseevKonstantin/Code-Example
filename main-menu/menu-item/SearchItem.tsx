@@ -10,7 +10,6 @@ import { TextField } from '@material-ui/core';
 import { IObject } from 'types/object';
 import useClientSize from 'hooks/useClientSize';
 import MenuItem from './index';
-import { emptyFunction } from '../utils';
 
 interface ISearchResultProps {
   tree: Array<ITreeNode>;
@@ -20,7 +19,7 @@ interface ISearchResultProps {
 interface ISearchMenuItemProps extends ISearchResultProps {
   isOpen: boolean;
   onChangePattern: (event: TInputOnchangeType) => void;
-  onOpenMenu?: undefined | (() => void);
+  onOpenMenu?: () => void | undefined;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -169,7 +168,7 @@ export default function SearchItem(props: ISearchMenuItemProps): ReactElement {
           placeholder="Поиск в меню"
           value={searchPattern}
           onChange={onChangePattern}
-          onClick={emptyFunction}
+          onClick={() => undefined}
         />
       </div>
       <div ref={resultRef} className={styles.result}>

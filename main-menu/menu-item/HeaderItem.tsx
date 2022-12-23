@@ -19,8 +19,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function HeaderItem(props: IHeaderMenuItemProps): ReactElement {
-  const { node } = props;
+export default function HeaderItem({
+  node,
+}: IHeaderMenuItemProps): ReactElement {
   const { title } = node;
   const styles = useStyles();
 

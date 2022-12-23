@@ -9,6 +9,7 @@ import { ITreeNode } from 'types/treeNode';
 import Collapse from 'components/Collapse';
 import getMixin from 'utils/mixins';
 import { isLightTheme } from 'utils/theme';
+import emptyFunction from 'utils/emptyFunction';
 
 interface IMenuProps {
   node?: IObject;
@@ -67,7 +68,7 @@ const useHeaderStyles = makeStyles((theme) => ({
 }));
 
 const useIconButtonStyles = makeStyles((theme) => ({
-  root: { ...getMixin('iconAroundButton', theme) },
+  root: getMixin('iconAroundButton', theme),
 }));
 
 const useButtonStyles = makeStyles({
@@ -77,7 +78,7 @@ const useButtonStyles = makeStyles({
 });
 
 function Submenu(props: IMenuProps): ReactElement {
-  const { children, id, node = {}, onClose, level = 1 } = props;
+  const { children, id, node = {}, onClose = emptyFunction, level = 1 } = props;
   const { isOpen = false, title } = node;
   const styles = useStyles({ level, isOpen });
   const headerStyles = useHeaderStyles();
@@ -85,8 +86,8 @@ function Submenu(props: IMenuProps): ReactElement {
   const iconButtonStyles = useIconButtonStyles();
   const buttonStyles = useButtonStyles();
 
-  function handleOnClose(): void {
-    if (typeof onClose === 'function') onClose(node);
+  function handleOnClose() {
+    onClose(node);
   }
 
   return (

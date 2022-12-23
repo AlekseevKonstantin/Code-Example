@@ -5,10 +5,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { IObject } from 'types/object';
 import { withRouter } from 'react-router';
 import getMixin from 'utils/mixins';
-
-interface IStylesProps {
-  isVisible: boolean;
-}
+import { CABINET } from 'constants/routes';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,8 +19,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   avatar: {
-    width: ({ isVisible }: IStylesProps) => (isVisible ? '50px' : '40px'),
-    height: ({ isVisible }: IStylesProps) => (isVisible ? '50px' : '40px'),
+    width: '40px',
+    height: '40px',
     transition: 'all .2s ease-in-out',
   },
   inner: {
@@ -37,12 +34,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AvatarItem(props: IObject): ReactElement {
-  const { node, history, onOpenMenu } = props;
-  const isVisible = !!node.isVisible;
-  const styles = useStyles({ isVisible });
+  const { history, onOpenMenu } = props;
+  const styles = useStyles();
 
   function handleOnClick(): void {
-    history.push('/cabinet');
+    history.push(CABINET);
   }
 
   return (

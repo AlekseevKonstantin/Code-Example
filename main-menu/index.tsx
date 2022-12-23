@@ -38,7 +38,7 @@ export default function MainMenu(props: IObject): ReactElement {
   }, [isOpenLeftAside, isMobile]);
 
   /* реализация обработчика событий открытия/закрытия главного меню */
-  function toggleMainMenu(active: boolean): void {
+  function toggleMainMenu(active: boolean) {
     fillNode(state[0], { isOpen: active });
     setValuesToChildren(state, { isVisible: active });
     toggleVisibleSubmenu(active);
@@ -47,7 +47,7 @@ export default function MainMenu(props: IObject): ReactElement {
 
   /* реализует скрытие/открытие подменю когда главное меню закрывется/открывается */
   function getCloseSubmenuCallback(active: boolean) {
-    return function closeSubmenuCallback(node: ITreeNode): void {
+    return function closeSubmenuCallback(node: ITreeNode) {
       const { wrapper, isOpen, isMustOpen } = node;
       if (wrapper === 'submenu' && (isOpen || isMustOpen)) {
         fillNode(node, { isOpen: active, isMustOpen: !active });
@@ -55,13 +55,12 @@ export default function MainMenu(props: IObject): ReactElement {
     };
   }
 
-  function toggleVisibleSubmenu(active: boolean): void {
+  function toggleVisibleSubmenu(active: boolean) {
     traversalTree(state, getCloseSubmenuCallback(active));
   }
-  /* ----------------------------------------------------------------------------- */
 
   /* закрывает открытое подменю при открытии другого подменю */
-  function toggleSubmenuCallback(node: ITreeNode): void {
+  function toggleSubmenuCallback(node: ITreeNode) {
     const { wrapper } = node;
     if (wrapper === 'submenu') {
       fillNode(node, { isOpen: false, isMustOpen: false });
@@ -70,7 +69,7 @@ export default function MainMenu(props: IObject): ReactElement {
 
   /* реализует открытие/закрытие подменю */
   function toggleSubmenu(active: boolean) {
-    return function toggleSubmenuHandler(node: ITreeNode): void {
+    return function toggleSubmenuHandler(node: ITreeNode) {
       if (!!node.children && node.children.length > 0) {
         traversalTree(state, toggleSubmenuCallback);
         fillNode(node, { isOpen: active });
@@ -80,11 +79,11 @@ export default function MainMenu(props: IObject): ReactElement {
     };
   }
 
-  function handleOnCloseMenu(): void {
+  function handleOnCloseMenu() {
     toggleMainMenu(false);
   }
 
-  function handleOnOpenMenu(): void {
+  function handleOnOpenMenu() {
     toggleMainMenu(true);
   }
 

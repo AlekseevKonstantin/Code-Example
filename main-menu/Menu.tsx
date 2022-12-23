@@ -6,7 +6,7 @@ import { IObject } from 'types/object';
 import Collapse from 'components/Collapse';
 import AsideServiceButtons from 'views/asides/service-buttons';
 import { isLightTheme } from 'utils/theme';
-import { emptyFunction } from './utils';
+import emptyFunction from 'utils/emptyFunction';
 
 interface IMenuProps {
   node?: IObject;

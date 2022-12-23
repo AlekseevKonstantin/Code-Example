@@ -14,8 +14,8 @@ const useStyles = makeStyles((theme) => ({
     height: '47px',
     background: () => {
       return isLightTheme(theme)
-        ? 'url("/logo/logo-wt.png") left center no-repeat'
-        : 'url("/logo/logo-dt.png") left center no-repeat';
+        ? 'url("/logo/logo-long-wt.png") left center no-repeat'
+        : 'url("/logo/logo-long-dt.png") left center no-repeat';
     },
     backgroundSize: 'auto 100% !important',
   },
@@ -25,7 +25,7 @@ export default function LogoItem(): ReactElement {
   const styles = useStyles();
 
   return (
-    <a href="www.noname.ru" className={styles.logo} aria-label="logo">
+    <a href="logo" className={styles.logo} aria-label="logo">
       <span aria-hidden="true" className={styles.image} />
     </a>
   );

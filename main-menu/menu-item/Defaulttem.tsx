@@ -7,12 +7,13 @@ import { isLightTheme } from 'utils/theme';
 import getIcon from 'utils/icons';
 import getMixin from 'utils/mixins';
 import { ITreeNode } from 'types/treeNode';
+import emptyFunction from 'utils/emptyFunction';
 
 interface IDefaultAsideMenuItem {
   node: IObject;
   classes?: IObject;
-  onOpenMenu?: undefined | (() => void);
-  onOpenSubmenu?: undefined | ((node: ITreeNode) => void);
+  onOpenMenu?: () => void | undefined;
+  onOpenSubmenu?: (node: ITreeNode) => void | undefined;
   nowrap?: boolean | undefined;
 }
 
@@ -67,7 +68,7 @@ const useIconBtnStyles = makeStyles({
 });
 
 const useIconButtonStyles = makeStyles((theme) => ({
-  root: { ...getMixin('iconAroundButton', theme) },
+  root: getMixin('iconAroundButton', theme),
 }));
 
 const useIconStyles = makeStyles((theme) => ({
@@ -79,7 +80,12 @@ const useIconStyles = makeStyles((theme) => ({
 export default function DefaultItem(
   props: IDefaultAsideMenuItem
 ): ReactElement {
-  const { node, classes = {}, onOpenMenu, onOpenSubmenu } = props;
+  const {
+    node,
+    classes = {},
+    onOpenMenu = emptyFunction,
+    onOpenSubmenu = emptyFunction,
+  } = props;
   const { icon = '', iconHoverColor = '', title, children, nowrap } = node;
   const isActive = !!node.isActive;
   const isSubmenu = !!children;
@@ -90,7 +96,7 @@ export default function DefaultItem(
   const iconStyles = useIconStyles();
 
   function handleOnOpenSubmenu(): void {
-    if (typeof onOpenSubmenu === 'function') onOpenSubmenu(node);
+    onOpenSubmenu(node);
   }
 
   return (

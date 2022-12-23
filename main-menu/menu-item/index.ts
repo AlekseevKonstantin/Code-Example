@@ -17,14 +17,6 @@ interface IHandlerProps {
   setState: (value: IObject) => void;
 }
 
-function EqualTitleFunction(prev: IObject, next: IObject): boolean {
-  return prev.node.title === next.node.title;
-}
-
-function EqualTypeFunction(prev: IObject, next: IObject): boolean {
-  return prev.node.type === next.node.type;
-}
-
 /* SearchItem */
 
 let timer: ReturnType<typeof setTimeout>;
@@ -38,8 +30,7 @@ const handlers = {
   },
 };
 
-// eslint-disable-next-line
-function effect(props: IObject): any {
+function effect(props: IObject): void {
   const { searchPattern, setState, isOpen } = props;
 
   clearTimeout(timer);
@@ -48,8 +39,6 @@ function effect(props: IObject): any {
     const isOpenFlag = searchPattern.length > 0;
     setState((prevState: IObject) => ({ ...prevState, isOpen: isOpenFlag }));
   }, 400);
-
-  return () => clearTimeout(timer);
 }
 
 function depts(props: IObject): DependencyList {
@@ -63,24 +52,26 @@ const SearchMenuItem = compose(
   withHandlers(handlers)
 )(SearchItem);
 
-/*  DefaultItem  */
-
-const MemoizedDefaultItem = memo(DefaultItem, EqualTitleFunction);
-const MemoizedLogoItem = memo(LogoItem, EqualTypeFunction);
-const MemoizedHeaderItem = memo(HeaderItem, EqualTitleFunction);
+/* menu items */
 
 const itemType: IObject = {
-  default: MemoizedDefaultItem,
-  logo: MemoizedLogoItem,
+  default: DefaultItem,
+  logo: LogoItem,
   avatar: AvatarItem,
-  header: MemoizedHeaderItem,
+  header: HeaderItem,
   search: SearchMenuItem,
 };
 
-export default function MenuItem(props: IObject): ReactElement | null {
+export function MenuItem(props: IObject): ReactElement | null {
   const { node } = props;
   const { type = 'default' } = node;
   const Item = itemType[type];
 
   return Item ? React.createElement(Item, { ...props }) : null;
 }
+
+export default memo(
+  MenuItem,
+  (prev: IObject, next: IObject) =>
+    prev.node.title === next.node.title && prev.node.type === next.node.type
+);
