@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { RouteComponentProps } from 'react-router';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function AvatarItem(props: IObject): ReactElement {
+function AvatarItem(props: RouteComponentProps & { onOpenMenu: () => void }): ReactElement {
   const { history, onOpenMenu } = props;
   const styles = useStyles();
 

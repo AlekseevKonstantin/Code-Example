@@ -30,7 +30,7 @@ const handlers = {
   },
 };
 
-function effect(props: IObject): void {
+function effect(props: IObject) {
   const { searchPattern, setState, isOpen } = props;
 
   clearTimeout(timer);
@@ -41,8 +41,7 @@ function effect(props: IObject): void {
   }, 400);
 }
 
-function depts(props: IObject): DependencyList {
-  const { searchPattern } = props;
+function depts({ searchPattern }: IObject): DependencyList {
   return [searchPattern];
 }
 
