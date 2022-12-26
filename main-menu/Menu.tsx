@@ -2,14 +2,14 @@ import React, { ReactElement, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { TChildrenProps } from 'types/childrenProp';
-import { IObject } from 'types/object';
 import Collapse from 'components/Collapse';
 import AsideServiceButtons from 'views/asides/service-buttons';
 import { isLightTheme } from 'utils/theme';
 import emptyFunction from 'utils/emptyFunction';
+import { INode } from 'types/treeNode';
 
 interface IMenuProps {
-  node?: IObject;
+  node?: INode;
   children?: TChildrenProps;
   onClose?: () => void | undefined;
   onCloseAside?: () => void | undefined;
@@ -48,14 +48,14 @@ const useCollapseStyles = makeStyles((theme) => ({
 export default function Menu(props: IMenuProps): ReactElement {
   const {
     children,
-    node = {},
+    node,
     onClose,
     onCloseAside = emptyFunction,
     isMobile,
     onFix = emptyFunction,
     isLeftAsideFix,
   } = props;
-  const { isOpen = false } = node;
+  const isOpen = node?.isOpen ?? false;
   const styles = useStyles({ isOpen });
   const collapseStyles = useCollapseStyles();
 
