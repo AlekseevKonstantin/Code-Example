@@ -1,12 +1,14 @@
 import React, { ReactElement } from 'react';
-import { RouteComponentProps } from 'react-router';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-import { IObject } from 'types/object';
-import { withRouter } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 import getMixin from 'utils/mixins';
 import { CABINET } from 'constants/routes';
+
+export interface IAvatarItem extends Pick<RouteComponentProps, 'history'> {
+  onOpenMenu?: () => void;
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,11 +36,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function AvatarItem(props: RouteComponentProps & { onOpenMenu: () => void }): ReactElement {
+function AvatarItem(props: IAvatarItem): ReactElement {
   const { history, onOpenMenu } = props;
   const styles = useStyles();
 
-  function handleOnClick(): void {
+  function handleOnClick() {
     history.push(CABINET);
   }
 

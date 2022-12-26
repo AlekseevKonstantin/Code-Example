@@ -6,14 +6,14 @@ import { IObject } from 'types/object';
 import { isLightTheme } from 'utils/theme';
 import getIcon from 'utils/icons';
 import getMixin from 'utils/mixins';
-import { ITreeNode } from 'types/treeNode';
+import { INode } from 'types/treeNode';
 import emptyFunction from 'utils/emptyFunction';
 
-interface IDefaultAsideMenuItem {
-  node: IObject;
-  classes?: IObject;
+export interface IDefaultAsideMenuItem {
+  node: INode;
+  classes?: Record<string, string>;
   onOpenMenu?: () => void | undefined;
-  onOpenSubmenu?: (node: ITreeNode) => void | undefined;
+  onOpenSubmenu?: (node: INode) => void | undefined;
   nowrap?: boolean | undefined;
 }
 
@@ -95,7 +95,7 @@ export default function DefaultItem(
   const iconBtnStyles = useIconBtnStyles();
   const iconStyles = useIconStyles();
 
-  function handleOnOpenSubmenu(): void {
+  function handleOnOpenSubmenu() {
     onOpenSubmenu(node);
   }
 

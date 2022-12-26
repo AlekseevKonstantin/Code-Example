@@ -25,7 +25,7 @@ export default function LogoItem(): ReactElement {
   const styles = useStyles();
 
   return (
-    <a href="logo" className={styles.logo} aria-label="logo">
+    <a href="www.tentorg.ru" className={styles.logo} aria-label="logo">
       <span aria-hidden="true" className={styles.image} />
     </a>
   );

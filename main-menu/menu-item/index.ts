@@ -1,24 +1,23 @@
 import React, { ReactElement, DependencyList, memo } from 'react';
 import { IObject } from 'types/object';
-import { ITreeNode } from 'types/treeNode';
+import { INode } from 'types/treeNode';
 import { TInputOnchangeType } from 'types/handlers';
 import { compose, withState, withHandlers, withEffect } from 'hocs';
-import DefaultItem from './Defaulttem';
+import DefaultItem, { IDefaultAsideMenuItem } from './Defaulttem';
 import LogoItem from './LogoItem';
-import AvatarItem from './AvatarItem';
-import HeaderItem from './HeaderItem';
-import SearchItem from './SearchItem';
+import AvatarItem, { IAvatarItem } from './AvatarItem';
+import HeaderItem, { IHeaderMenuItem } from './HeaderItem';
+import SearchItem, { ISearchMenuItem } from './SearchItem';
 import config from '../config';
 
 interface IHandlerProps {
-  tree: Array<ITreeNode>;
+  tree: Array<INode>;
   isOpen: boolean;
   searchPattern: string;
   setState: (value: IObject) => void;
 }
 
 /* SearchItem */
-
 let timer: ReturnType<typeof setTimeout>;
 const initState = { tree: config, isOpen: false, searchPattern: '' };
 const handlers = {
@@ -52,7 +51,6 @@ const SearchMenuItem = compose(
 )(SearchItem);
 
 /* menu items */
-
 const itemType: IObject = {
   default: DefaultItem,
   logo: LogoItem,
@@ -61,9 +59,11 @@ const itemType: IObject = {
   search: SearchMenuItem,
 };
 
-export function MenuItem(props: IObject): ReactElement | null {
+type TMenuItem = Partial<IAvatarItem & IDefaultAsideMenuItem & IHeaderMenuItem & ISearchMenuItem>;
+
+export function MenuItem(props: TMenuItem): ReactElement | null {
   const { node } = props;
-  const { type = 'default' } = node;
+  const type = node?.type ?? 'default';
   const Item = itemType[type];
 
   return Item ? React.createElement(Item, { ...props }) : null;
@@ -71,6 +71,6 @@ export function MenuItem(props: IObject): ReactElement | null {
 
 export default memo(
   MenuItem,
-  (prev: IObject, next: IObject) =>
-    prev.node.title === next.node.title && prev.node.type === next.node.type
+  (prev: TMenuItem, next: TMenuItem) =>
+    prev?.node?.title === next?.node?.title && prev?.node?.type === next?.node?.type
 );

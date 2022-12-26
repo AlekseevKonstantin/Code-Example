@@ -1,30 +1,30 @@
 import React, { ReactElement, useState, memo, useEffect } from 'react';
 import AsideMenuItem from 'views/main-menu/menu-item';
-import { IObject } from 'types/object';
 import { fillNode, setValuesToChildren, traversalTree } from 'utils/tree';
-import { ITreeNode } from 'types/treeNode';
-import Recursive from 'components/Recursive';
+import { INode } from 'types/treeNode';
+import Recursive, { IRecursiveProps } from 'components/Recursive';
 import { handleOnClose, handleOnFix } from 'views/asides/handlers';
 import Menu from './Menu';
 import Submenu from './Submenu';
 import Group from './Group';
 import data from './config';
+import { ILeftAside } from '../asides/left';
 
-const fixKey: IObject = {
+const fixKey: Record<string, string> = {
   true: 'fix',
   false: '',
 };
 
-function equalFunction(prev: IObject, next: IObject): boolean {
+function equalFunction(prev: IRecursiveProps, next: IRecursiveProps): boolean {
   return prev.data === next.data;
 }
 
 const MemoizedRecursive = memo(Recursive, equalFunction);
 
-export default function MainMenu(props: IObject): ReactElement {
+export default function MainMenu(props: ILeftAside): ReactElement {
   const { side, globalState, setGlobalState } = props;
   const { isOpenLeftAside, isMobile, isLeftAsideFix } = globalState;
-  const [state, setState] = useState<Array<IObject>>(data);
+  const [state, setState] = useState<Array<INode>>(data);
 
   const propsState = {
     side,
@@ -47,7 +47,7 @@ export default function MainMenu(props: IObject): ReactElement {
 
   /* реализует скрытие/открытие подменю когда главное меню закрывется/открывается */
   function getCloseSubmenuCallback(active: boolean) {
-    return function closeSubmenuCallback(node: ITreeNode) {
+    return function closeSubmenuCallback(node: INode) {
       const { wrapper, isOpen, isMustOpen } = node;
       if (wrapper === 'submenu' && (isOpen || isMustOpen)) {
         fillNode(node, { isOpen: active, isMustOpen: !active });
@@ -60,7 +60,7 @@ export default function MainMenu(props: IObject): ReactElement {
   }
 
   /* закрывает открытое подменю при открытии другого подменю */
-  function toggleSubmenuCallback(node: ITreeNode) {
+  function toggleSubmenuCallback(node: INode) {
     const { wrapper } = node;
     if (wrapper === 'submenu') {
       fillNode(node, { isOpen: false, isMustOpen: false });
@@ -69,7 +69,7 @@ export default function MainMenu(props: IObject): ReactElement {
 
   /* реализует открытие/закрытие подменю */
   function toggleSubmenu(active: boolean) {
-    return function toggleSubmenuHandler(node: ITreeNode) {
+    return function toggleSubmenuHandler(node: INode) {
       if (!!node.children && node.children.length > 0) {
         traversalTree(state, toggleSubmenuCallback);
         fillNode(node, { isOpen: active });

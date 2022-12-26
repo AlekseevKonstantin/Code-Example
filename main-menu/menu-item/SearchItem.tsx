@@ -1,22 +1,22 @@
 import React, { ReactElement, memo, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { ITreeNode } from 'types/treeNode';
+import { INode } from 'types/treeNode';
 import { TInputOnchangeType } from 'types/handlers';
 import Collapse from 'components/Collapse';
 import getMixin from 'utils/mixins';
 import getIcon from 'utils/icons';
 import { isLightTheme } from 'utils/theme';
 import { TextField } from '@material-ui/core';
-import { IObject } from 'types/object';
 import useClientSize from 'hooks/useClientSize';
+import emptyFunction from 'utils/emptyFunction';
 import MenuItem from './index';
 
 interface ISearchResultProps {
-  tree: Array<ITreeNode>;
+  tree: Array<INode>;
   searchPattern: string;
 }
 
-interface ISearchMenuItemProps extends ISearchResultProps {
+export interface ISearchMenuItem extends ISearchResultProps {
   isOpen: boolean;
   onChangePattern: (event: TInputOnchangeType) => void;
   onOpenMenu?: () => void | undefined;
@@ -95,13 +95,13 @@ const useEmptyResultStyles = makeStyles((theme) => ({
   },
 }));
 
-function isTitle(node: ITreeNode, searchPattern: string): boolean {
-  const { title } = node;
-  return title && title.search(searchPattern) > -1;
+function isTitle(node: INode, searchPattern: string): boolean {
+  const { title = '' } = node;
+  return !!title && title.search(searchPattern) > -1;
 }
 
 function getResults(
-  searchData: Array<ITreeNode>,
+  searchData: Array<INode>,
   searchPattern: string
 ): Array<ReactElement> {
   let result: Array<ReactElement> = [];
@@ -113,7 +113,7 @@ function getResults(
       if (isTitle(node, searchPattern)) {
         result = [
           ...result,
-          <MenuItem node={{ type: 'header', title }} key={id} />,
+          <MenuItem node={{ type: 'header', title, id }} key={id} />,
         ];
       }
       result = [...result, ...getResults(children, searchPattern)];
@@ -142,14 +142,20 @@ function SearchResult({
   return <>{result.length > 0 ? result : <EmptyResult />}</>;
 }
 
-function equalsearchResultFunc(prev: IObject, next: IObject): boolean {
+function equalsearchResultFunc(prev: Partial<ISearchMenuItem>, next: Partial<ISearchMenuItem>): boolean {
   return prev.searchPattern === next.searchPattern || next.searchPattern === '';
 }
 
 const MemoizedSearchResult = memo(SearchResult, equalsearchResultFunc);
 
-export default function SearchItem(props: ISearchMenuItemProps): ReactElement {
-  const { tree, isOpen, searchPattern, onChangePattern, onOpenMenu } = props;
+export default function SearchItem(props: ISearchMenuItem): ReactElement {
+  const {
+    tree,
+    isOpen,
+    searchPattern,
+    onChangePattern,
+    onOpenMenu = emptyFunction,
+  } = props;
   const styles = useStyles();
   const textfieldStyles = useTextfieldStyles();
   const resultRef: React.RefObject<HTMLDivElement> = useRef(null);

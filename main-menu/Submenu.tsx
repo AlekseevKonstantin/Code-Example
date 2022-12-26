@@ -1,21 +1,20 @@
 import React, { ReactElement } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { TChildrenProps } from 'types/childrenProp';
-import { IObject } from 'types/object';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import getIcon from 'utils/icons';
-import { ITreeNode } from 'types/treeNode';
+import { INode } from 'types/treeNode';
 import Collapse from 'components/Collapse';
 import getMixin from 'utils/mixins';
 import { isLightTheme } from 'utils/theme';
-import emptyFunction from 'utils/emptyFunction';
+import emptyFunction from '../../utils/emptyFunction';
 
-interface IMenuProps {
-  node?: IObject;
+interface ISubmenuProps {
+  node?: INode;
   children?: TChildrenProps;
   id?: string;
-  onClose?: (node: ITreeNode) => void;
+  onClose?: (node: INode) => void;
   level?: number;
 }
 
@@ -77,9 +76,9 @@ const useButtonStyles = makeStyles({
   },
 });
 
-function Submenu(props: IMenuProps): ReactElement {
-  const { children, id, node = {}, onClose = emptyFunction, level = 1 } = props;
-  const { isOpen = false, title } = node;
+function Submenu(props: ISubmenuProps): ReactElement {
+  const { children, id, node, onClose = emptyFunction, level = 1 } = props;
+  const { isOpen = false, title } = node ?? {};
   const styles = useStyles({ level, isOpen });
   const headerStyles = useHeaderStyles();
   const containerStyles = useContainerStyles();
@@ -87,7 +86,7 @@ function Submenu(props: IMenuProps): ReactElement {
   const buttonStyles = useButtonStyles();
 
   function handleOnClose() {
-    onClose(node);
+    onClose(node || ({} as INode));
   }
 
   return (

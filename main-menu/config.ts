@@ -5,8 +5,9 @@ import {
   INDIGO_COLOR,
   ERROR_COLOR,
 } from 'constants/colors';
+import { INode } from 'types/treeNode';
 
-export default [
+const data: Array<INode> = [
   {
     id: 1,
     wrapper: 'menu',
@@ -171,3 +172,5 @@ export default [
     ],
   },
 ];
+
+export default data;

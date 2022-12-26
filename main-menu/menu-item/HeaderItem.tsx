@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { isLightTheme } from 'utils/theme';
-import { IObject } from 'types/object';
+import { INode } from 'types/treeNode';
 
-interface IHeaderMenuItemProps {
-  node: IObject;
+export interface IHeaderMenuItem {
+  node: INode;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function HeaderItem({
   node,
-}: IHeaderMenuItemProps): ReactElement {
+}: IHeaderMenuItem): ReactElement {
   const { title } = node;
   const styles = useStyles();
 
