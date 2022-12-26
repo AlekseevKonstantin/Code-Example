@@ -14,7 +14,7 @@ export interface IDefaultAsideMenuItem {
   classes?: Record<string, string>;
   onOpenMenu?: () => void | undefined;
   onOpenSubmenu?: (node: INode) => void | undefined;
-  nowrap?: boolean | undefined;
+  nowrap: boolean;
 }
 
 interface IStylesProps {

@@ -174,7 +174,7 @@ export default function SearchItem(props: ISearchMenuItem): ReactElement {
           placeholder="Поиск в меню"
           value={searchPattern}
           onChange={onChangePattern}
-          onClick={() => undefined}
+          onClick={emptyFunction}
         />
       </div>
       <div ref={resultRef} className={styles.result}>
